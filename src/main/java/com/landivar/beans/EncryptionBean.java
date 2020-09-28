@@ -34,6 +34,8 @@ public class EncryptionBean {
     int iterationCount = 19;
     Cipher ecipher;
     Cipher dcipher;
+    
+    
 
     public EncryptionBean() {}
     
