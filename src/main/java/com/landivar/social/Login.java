@@ -273,41 +273,11 @@ public class Login extends javax.swing.JFrame {
 
 
     public boolean loginResult(String username, String password) throws Exception{
+        //password.equals(encryptPasswork.decrypt(splitResult[3]))
         EncryptionBean encryptPasswork = new EncryptionBean();
-        URL usersPath = getClass().getResource("/com.landivar.source/users.txt");
-        File file = new File(usersPath.getPath());
-        if(file.exists()){
-            FileReader readerFile;
-            try{
-               readerFile = new FileReader(file);
-                BufferedReader reader = new BufferedReader(readerFile);
-                String lineReader;
-                try {
-                    lineReader = reader.readLine();
-                    String[] splitResult;
-                    while(lineReader != null){
-                        if(!"".equals(lineReader)){
-                            splitResult = lineReader.split(",");
-                            if((splitResult[0].equals(username) && password.equals(encryptPasswork.decrypt(splitResult[3])))){
-                                //return true;
-                                break;
-                            }
-                        }
-                        lineReader = reader.readLine();
-                    }
-                    readerFile.close();
-                    reader.close();
-                    
-                    return false;
-                }catch(IOException ex){
-                    ex.getMessage();
-                    return false;
-                }
-            }catch(FileNotFoundException ex){
-                ex.getMessage();
-                return false;
-            }
-        }
+        
+        
+        
         return false;
     }
     
@@ -338,8 +308,6 @@ public class Login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        UserConstructor constructor = new UserConstructor();
-        constructor.getUserByUsername("Ale");
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
