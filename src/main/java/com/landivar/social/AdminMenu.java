@@ -9,6 +9,7 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import com.landivar.social.EditUsers;
+import com.landivar.system.Storage;
 import com.sun.tools.javac.Main;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ import java.nio.file.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 /**
@@ -392,16 +394,6 @@ public class AdminMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailKeyPressed
 
-    public void moverArchivo(String origen, String destino){
-        Path origenPath = FileSystems.getDefault().getPath(origen);
-        Path destinoPath = FileSystems.getDefault().getPath(destino);
-        try {
-            Files.move(origenPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-           System.err.println(e);
-        }
-    }
-    
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         JFileChooser dialogo = new JFileChooser();
         dialogo.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -465,7 +457,7 @@ public class AdminMenu extends javax.swing.JFrame {
     private void btnGenerateBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateBackupActionPerformed
 
        String route = txtTFRoute.getText()+"/bitacora_backup.txt";
-       String oldFile = "C:/MEIAS/usuario";
+       String oldFile = "C:/MEIAS";
        File file = new File(route);
        try {
        if (!file.exists()) {           
@@ -474,11 +466,17 @@ public class AdminMenu extends javax.swing.JFrame {
            if (file.exists()) {
                if(!"".equals(route)) {
                String strError="";
-                 if(!Obtener(oldFile, strError)) {
+                 if(!Obtener(route, strError)) {
                      JOptionPane.showMessageDialog(null, "Se prodrujo un error al cagar los registros: " +strError,"ERROR!", WIDTH);
                  }
                 }
                 else {
+                       File carpeta = new File(txtTFRoute.getText());
+                       File[] archivos = carpeta.listFiles();
+
+                       for(File archivo : archivos){
+                           moveFile(oldFile,txtTFRoute.getText());
+                       }
                     JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo para obtener los registros ","ERROR!", WIDTH);
                 }
            }
@@ -490,6 +488,8 @@ public class AdminMenu extends javax.swing.JFrame {
      
     }//GEN-LAST:event_btnGenerateBackupActionPerformed
 
+    
+    
     private void txtTFRouteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTFRouteFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTFRouteFocusGained
@@ -516,6 +516,18 @@ public class AdminMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRouteBActionPerformed
 
+    public void moveFile(String origen, String destino){
+        Path origenPath = FileSystems.getDefault().getPath(origen);
+        Path destinoPath = FileSystems.getDefault().getPath(destino);
+
+
+        try {
+            Files.move(origenPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+           System.err.println(e);
+        }
+    }
+    
     public boolean Obtener(String strPath, String strError) {
         File Archivo = new File(strPath);
         if(Archivo.exists()==true) {
@@ -526,43 +538,85 @@ public class AdminMenu extends javax.swing.JFrame {
                 String Linea="";
                 try {
                     Linea=LeerArchivo.readLine();
-                    String[] split;
+                    String bitacora;
                     FileWriter fw = new FileWriter(strPath, true);
                     BufferedWriter bw = new BufferedWriter(fw);
-                    
-                    while(Linea != null) {
-                        if(!"".equals(Linea)) {
-                            split=Linea.split("|");
-                            for(int i = 0; i < 6; i++){
-                                bw.write(split[i]);    
-                            }
-                            bw.newLine();
+                    boolean update = false;
+                    while(Linea != null && update == false) {
+                        Linea=LeerArchivo.readLine();        
                         }
-                        Linea=LeerArchivo.readLine();
-                    }
+                    
+                    Date objDate = new Date();
+                    bitacora = strPath + "|" + Storage.Instance().user.getUsername()+"|"+objDate.toString();
+                    bw.write(bitacora);    
+                    bw.newLine();
                     bw.close();
                     
+                    impresion(txtTFRoute.getText()+"desc_bitacora_backup.txt");
                     LecturaArchivo.close();
                     LeerArchivo.close();
                     strError="";
                     return true;
-                    
-                } catch (IOException ex) {
+                }
+                 catch (IOException ex) {
                     strError= ex.getMessage();
                     return false;
                 }
-            } catch (FileNotFoundException ex) {
+            }
+            catch (FileNotFoundException ex) {
                 strError= ex.getMessage();
                 return false;
-            }            
-        }
+            }  
+            }           
         else {
             strError="No existe el archivo";
             return false;
         }
+        }
+    
+    public void impresion(String strPath) throws IOException{
+        File usuario = new File(strPath);
+            if (!usuario.exists()) {
+                usuario.createNewFile();
+            }
+                FileReader LecturaArchivo;
+                LecturaArchivo = new FileReader(usuario);
+                BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
+                String Linea="";
+                    Linea=LeerArchivo.readLine();
+                    String[] split = new String[9];
+                    FileWriter fw = new FileWriter(usuario, true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    int c = 0;
+                    for (int i = 0; i < 9; i++) {
+                        split[i] = Linea;
+                    }
+                    if (split!= null) {
+                        Date objDate = new Date();
+                        int f = Integer.parseInt(split[0].split(":")[1])+1;
+                       String[] values = {"nombre_simbolico:desc_bitacora_backup","fecha_creacion:"+split[1].split(":")[2],"usuario_creacion:"+split[2].split(":")[1],"fecha_modificacion:"+objDate.toString(),
+                            "usuario_modificacion:"+Storage.Instance().user.getUsername(), "#_registros:" + f};
+                        for (int i = 0; i < 9; i++) {
+                            bw.write(values[i]); 
+                            bw.newLine();
+                        }
+                    }
+                    else{
+                       Date objDate = new Date();
+                       String[] values = {"nombre_simbolico:desc_bitacora_backup","fecha_creacion:"+objDate.toString(),"usuario_creacion:"+Storage.Instance().user.getUsername(),"fecha_modificacion:"+objDate.toString(),
+                            "usuario_modificacion:"+Storage.Instance().user.getUsername(), "#_registros:1", "registros_activos:1", "registros_inactivos:0",
+                            "max_reorganizacion:"+"80"};
+                       for (int i = 0; i < 9; i++) {
+                        if (i<2) {
+                            bw.write(values[i]);
+                        }
+                       }
+                    }
+                    
+                    bw.close();
+                    LecturaArchivo.close();
+                    LeerArchivo.close();
     }
-    
-    
     
     /**
      * @param args the command line arguments

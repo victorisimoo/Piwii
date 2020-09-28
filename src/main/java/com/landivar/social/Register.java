@@ -2,6 +2,7 @@ package com.landivar.social;
 import com.landivar.beans.UserBean;
 import com.landivar.beans.EncryptionBean;
 import com.landivar.social.Login;
+import com.landivar.system.Storage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -367,6 +368,7 @@ public class Register extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNameFocusGained
@@ -383,7 +385,7 @@ public class Register extends javax.swing.JFrame {
 
     private void txtUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusGained
         // TODO add your handling code here:
-        txtUsername.setText("");
+        txtUsername.setText(Storage.Instance().user.getUsername());
     }//GEN-LAST:event_txtUsernameFocusGained
 
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
@@ -395,7 +397,7 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameKeyPressed
 
     private void txtPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPasswordFocusGained
-        // TODO add your handling code here:
+        txtPassword.setText(Storage.Instance().user.getPassword());
     }//GEN-LAST:event_txtPasswordFocusGained
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
@@ -478,6 +480,11 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelActionPerformed
 
     private void txtTelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyPressed
+        
+    
+    }//GEN-LAST:event_txtTelKeyPressed
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         try{
         UserBean user = new UserBean();
         user.setUsername(txtUsername.getText());
@@ -485,39 +492,36 @@ public class Register extends javax.swing.JFrame {
         user.setLastname(txtLastName.getText());
         EncryptionBean encryption = new EncryptionBean();
         user.setPassword(encryption.encrypt(txtPassword.getText()));
-//        if () {
-//            user.setRolUser(1);
-//        }
-//        else{
-//            user.setRolUser(0);
-//        }
-        String date = (txtDate.getText());
+        File file = new File("C:/MEIA/usuario.txt");
+        if (file.length() == 3) {
+            user.setRolUser(1);
+            JOptionPane.showMessageDialog(null, "Usted sera administrador", "Rol", JOptionPane.OK_OPTION);
+        }
+        else{
+            user.setRolUser(0);
+        }
+        user.setBirth(txtDate.getText());
         user.setMail(txtEmail.getText());
         user.setPhone(txtTel.getText());
         user.setPathPhoto(txtPicture.getText());
         user.setStatus(1);
         String strError="";
-        if (RegisterUser(user,strError) == 2) {
-            JOptionPane.showMessageDialog(null, "Se prodrujo un error al ingresar el archivo.","ERROR!", WIDTH);
+        if (RegisterUser(user,strError) == 1) {
+            JOptionPane.showMessageDialog(null, "El registro se ha realizado exitosamente.","ÉXITO!", WIDTH);
+            Login OpenLogin = new Login();
+            OpenLogin.setVisible(true);
+            dispose();
         }
         else if(RegisterUser(user,strError) == 0){
             JOptionPane.showMessageDialog(null, "El usuario ingresado ya está siendo utilizado.","ERROR!", WIDTH);
             txtUsername.setText("");
         }
         else{
-            JOptionPane.showMessageDialog(null, "El registro se ha realizado exitosamente.","ÉXITO!", WIDTH);
-            Login OpenLogin = new Login();
-            OpenLogin.setVisible(true);
-            dispose();
+            JOptionPane.showMessageDialog(null, "Se prodrujo un error al ingresar el archivo.","ERROR!", WIDTH);
         }
     } catch (Exception ex) {
           Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-    
-    }//GEN-LAST:event_txtTelKeyPressed
-
-    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
@@ -582,8 +586,8 @@ public class Register extends javax.swing.JFrame {
                         if(split[0] == user.getUsername()) {
                             return 0;
                         }
-                        counter++;
                         Linea=LeerArchivo.readLine();
+                        counter++;
                     }
                     if (Linea == null && inserted == false) {
                         bw.write(user.toString());
@@ -627,11 +631,11 @@ public class Register extends javax.swing.JFrame {
                     for (int i = 0; i < 9; i++) {
                         split[i] = Linea;
                     }
-                    if (split!= null) {
+                    if (split[0]!= null) {
                         Date objDate = new Date();
-                        int f = Integer.parseInt(split[0].split(":")[1])+1;
-                        int f2 = Integer.parseInt(split[0].split(":")[1])+1;
-                       String[] values = {"nombre_simbolico:"+split[0].split(":")[1],"fecha_creacion:"+split[1].split(":")[2],"usuario_creacion:"+split[2].split(":")[1],"fecha_modificacion:"+objDate.toString(),
+                        int f = (Integer.parseInt(split[0].split(":")[1]))+1;
+                        int f2 = (Integer.parseInt(split[0].split(":")[1]))+1;
+                       String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+split[1].split(":")[2],"usuario_creacion:"+split[2].split(":")[1],"fecha_modificacion:"+objDate.toString(),
                             "usuario_modificacion:"+user, "#_registros:" + f, "registros_activos:"+f2, "registros_inactivos:" + "0",
                             "max_reorganizacion:"+"80"};
                         for (int i = 0; i < 9; i++) {
@@ -642,7 +646,7 @@ public class Register extends javax.swing.JFrame {
                     }
                     else{
                        Date objDate = new Date();
-                       String[] values = {"nombre_simbolico:"+"desc_usuario","fecha_creacion:"+objDate.toString(),"usuario_creacion:"+user,"fecha_modificacion:"+objDate.toString(),
+                       String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+objDate.toString(),"usuario_creacion:"+user,"fecha_modificacion:"+objDate.toString(),
                             "usuario_modificacion:"+user, "#_registros:" + "1", "registros_activos:"+"1", "registros_inactivos:" + "0",
                             "max_reorganizacion:"+"80"};
                        for (int i = 0; i < 9; i++) {

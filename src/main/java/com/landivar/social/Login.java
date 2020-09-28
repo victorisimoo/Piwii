@@ -2,6 +2,8 @@ package com.landivar.social;
 
 import com.landivar.beans.UserBean;
 import com.landivar.beans.EncryptionBean;
+import com.landivar.social.Register;
+import com.landivar.system.Storage;
 import com.landivar.constructor.UserConstructor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -206,6 +208,8 @@ public class Login extends javax.swing.JFrame {
             try {
                 //Evaluación de login eXePmcA1Thtexi8+0GQD1g==
                 if(loginResult(txtUsername.getText(), String.valueOf(txtPassword.getPassword()))){
+                    UserConstructor user = new UserConstructor();
+                    Storage.Instance().user  = user.getUserByUsername(txtUsername.getText(), String.valueOf(txtPassword.getPassword()));
                     System.out.println("Login exitoso");
                 }else if(JOptionPane.showConfirmDialog(null, "El usuario aún no está agregado, ¿Desea agregarlo con los datos por default?","Usuario no agregado",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
@@ -256,9 +260,9 @@ public class Login extends javax.swing.JFrame {
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
         // TODO add your handling code here:
         //Llamar al siguiente form
-//        Register AbrirRegistro = new Register();
-//        AbrirRegistro.setVisible(true);
-//        dispose();
+        Register AbrirRegistro = new Register();
+        AbrirRegistro.setVisible(true);
+        dispose();
     }//GEN-LAST:event_lblRegisterMouseClicked
 
     public boolean loginResult(String username, String password) throws Exception{

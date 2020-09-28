@@ -145,6 +145,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Rol del usuario"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="LbRolFocusGained"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -158,11 +161,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Nombre de usuario"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="LbNameFocusGained"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="JPicture">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fotograf&#xed;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="JPictureFocusGained"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

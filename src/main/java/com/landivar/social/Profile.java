@@ -5,6 +5,9 @@
  */
 package com.landivar.social;
 import com.landivar.social.AdminMenu;
+import com.landivar.social.EditUsers;
+import com.landivar.system.Storage;
+import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -69,13 +72,28 @@ public class Profile extends javax.swing.JFrame {
         });
 
         LbRol.setText("Rol del usuario");
+        LbRol.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LbRolFocusGained(evt);
+            }
+        });
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Usuario");
 
         LbName.setText("Nombre de usuario");
+        LbName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LbNameFocusGained(evt);
+            }
+        });
 
         JPicture.setText("Fotografía");
+        JPicture.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                JPictureFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -147,10 +165,17 @@ public class Profile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
-
-        AdminMenu OpenSettings = new AdminMenu();
-        OpenSettings.setVisible(true);
-        dispose();
+        if (Storage.Instance().user.getRolUser() == 1) {
+            AdminMenu OpenSettings = new AdminMenu();
+            OpenSettings.setVisible(true);
+            dispose();
+        }
+        else if (Storage.Instance().user.getRolUser() == 0) {
+            EditUsers OpenSettings = new EditUsers();
+            OpenSettings.setVisible(true);
+            dispose();
+        }
+        
     }//GEN-LAST:event_BtnSettingsActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -160,6 +185,23 @@ public class Profile extends javax.swing.JFrame {
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_formFocusGained
+
+    private void LbNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbNameFocusGained
+        LbName.setText(Storage.Instance().user.getUsername());
+    }//GEN-LAST:event_LbNameFocusGained
+
+    private void LbRolFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbRolFocusGained
+        if (Storage.Instance().user.getRolUser() == 1) {
+            LbRol.setText("Administrador");
+        }
+        else{
+            LbRol.setText("Usuario");
+        }
+    }//GEN-LAST:event_LbRolFocusGained
+
+    private void JPictureFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JPictureFocusGained
+        JPicture.setIcon(new ImageIcon(Storage.Instance().user.getPathPhoto()));
+    }//GEN-LAST:event_JPictureFocusGained
 
     /**
      * @param args the command line arguments
@@ -188,15 +230,12 @@ public class Profile extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                int numberUser = 1;
-                String usuario = "/fotografias/usuario" + String.valueOf(numberUser);
-                ImageIcon image = new ImageIcon(getClass().getResource(usuario));
-                new Profile().setVisible(true);
+                
 
             }
         });
