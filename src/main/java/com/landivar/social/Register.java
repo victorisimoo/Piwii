@@ -517,13 +517,34 @@ public class Register extends javax.swing.JFrame {
         user.setLastname(txtLastName.getText());
         EncryptionBean encryption = new EncryptionBean();
         File file = new File("C:\\MEIA\\usuarios.txt");
-        if (file.length() == 3) {
-            user.setRolUser(1);
-            JOptionPane.showMessageDialog(null, "Usted sera administrador", "Rol", JOptionPane.OK_OPTION);
-        }
-        else{
+        int counter=0;
+            if (file.exists()) {
+                
+                FileReader LecturaArchivo;
+                LecturaArchivo = new FileReader(file);
+                BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
+                String Linea="";
+                while(Linea != null) {
+                        Linea=LeerArchivo.readLine();
+                        counter++;
+                    }
+                    LecturaArchivo.close();
+                    LeerArchivo.close();
+            }
+            if (counter == 0) {
+                user.setRolUser(1);
+                JOptionPane.showMessageDialog(null, "Usted sera administrador", "Rol", JOptionPane.OK_OPTION);
+            }
+            else{
+                if (jComboBox1.getSelectedItem()== "Administrador") {
+                   user.setRolUser(1); 
+                }
+                else{
+                    user.setRolUser(0);
+                }
+                
             user.setRolUser(0);
-        }
+            }
         user.setBirth(txtDate.getText());
         user.setPassword(encryption.encrypt(String.valueOf(txtPassword.getPassword())));
 
@@ -654,54 +675,6 @@ public class Register extends javax.swing.JFrame {
         }
         
     }
-     
-    public void impresion(String user) throws IOException{
-        File usuario = new File("C:\\MEIA\\desc_usuario.txt");
-            if (!usuario.exists()) {
-                usuario.createNewFile();
-            }
-                FileReader LecturaArchivo;
-                LecturaArchivo = new FileReader(usuario);
-                BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
-                String Linea="";
-
-                    Linea=LeerArchivo.readLine();
-                    String[] split = new String[9];
-                    FileWriter fw = new FileWriter(usuario, true);
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    int c = 0;
-                    for (int i = 0; i < 9; i++) {
-                        split[i] = Linea;
-                    }
-                    if (split[0]!= null) {
-                        Date objDate = new Date();
-                        int f = (Integer.parseInt(split[0].split(":")[1]))+1;
-                        int f2 = (Integer.parseInt(split[0].split(":")[1]))+1;
-                       String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+split[1].split(":")[2],"usuario_creacion:"+split[2].split(":")[1],"fecha_modificacion:"+objDate.toString(),
-                            "usuario_modificacion:"+user, "#_registros:" + f, "registros_activos:"+f2, "registros_inactivos:" + "0",
-                            "max_reorganizacion:"+"80"};
-                        for (int i = 0; i < 9; i++) {
-                            bw.write(values[i]); 
-                            bw.newLine();
-                            
-                        }
-                    }
-                    else{
-                       Date objDate = new Date();
-                       String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+objDate.toString(),"usuario_creacion:"+user,"fecha_modificacion:"+objDate.toString(),
-                            "usuario_modificacion:"+user, "#_registros:" + "1", "registros_activos:"+"1", "registros_inactivos:" + "0",
-                            "max_reorganizacion:"+"80"};
-                       for (int i = 0; i < 9; i++) {
-                        if (i<2) {
-                            bw.write(values[i]);
-                        }
-                       }
-                    }
-                    
-                    bw.close();
-                    LecturaArchivo.close();
-                    LeerArchivo.close();
-    }
     
     private void calculateStrength(String passwordText) {
         int upperChars = 0, lowerChars = 0, numbers = 0, specialChars = 0, otherChars = 0, strengthPoints = 0;
@@ -777,6 +750,57 @@ public class Register extends javax.swing.JFrame {
             lbPassword.setText("ALTO");
             lbPassword.setForeground(Color.GREEN);
         }
+    }
+    
+    
+    public void impresion(String user) throws IOException{
+        File usuario = new File("C:\\MEIA\\desc_usuario.txt");
+
+        if (!usuario.exists()) {
+            usuario.createNewFile();
+        }
+            FileReader LecturaArchivo;
+            LecturaArchivo = new FileReader(usuario);
+            BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
+            String Linea="";
+
+                Linea=LeerArchivo.readLine();
+                String[] split = new String[9];
+                FileWriter fw = new FileWriter(usuario, false);
+                BufferedWriter bw = new BufferedWriter(fw);
+                int c = 0;
+                for (int i = 0; i < 9; i++) {
+                    split[i] = Linea;
+                    Linea=LeerArchivo.readLine();
+                }
+                if (split[0]!= null) {
+                    Date objDate = new Date();
+                    int f = (Integer.parseInt(split[5].split(":")[1]))+1;
+                    int f2 = (Integer.parseInt(split[6].split(":")[1]))+1;
+                   String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+split[1].split(":")[2],"usuario_creacion:"+split[2].split(":")[1],"fecha_modificacion:"+objDate.toString(),
+                        "usuario_modificacion:"+user, "#_registros:" + f, "registros_activos:"+f2, "registros_inactivos:" + "0",
+                        "max_reorganizacion:"+"80"};
+                    for (int i = 0; i < values.length; i++) {
+                        bw.write(values[i]); 
+                        bw.newLine();
+
+                    }
+                }
+                else{
+                   Date objDate = new Date();
+                   String[] values = {"nombre_simbolico: desc_usuario","fecha_creacion:"+objDate.toString(),"usuario_creacion:"+user,"fecha_modificacion:"+objDate.toString(),
+                        "usuario_modificacion:"+user, "#_registros:" + "1", "registros_activos:"+"1", "registros_inactivos:" + "0",
+                        "max_reorganizacion:"+"80"};
+                        bw.write("");
+                   for (int i = 0; i < values.length; i++) {
+                        bw.write(values[i]);
+                        bw.newLine();
+                   }
+                }
+
+        bw.close();
+        LecturaArchivo.close();
+        LeerArchivo.close();
     }
     
     
