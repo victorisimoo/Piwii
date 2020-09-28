@@ -3,12 +3,8 @@ package com.landivar.social;
 import com.landivar.beans.UserBean;
 import com.landivar.beans.EncryptionBean;
 import com.landivar.constructor.UserConstructor;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -205,7 +201,6 @@ public class Login extends javax.swing.JFrame {
 
     //Login button
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        
         EncryptionBean encryptPasswork = new EncryptionBean();
         if(!"".equals(txtUsername.getText()) && (txtPassword.getPassword().length != 0)){
             try {
@@ -215,11 +210,7 @@ public class Login extends javax.swing.JFrame {
                 }else if(JOptionPane.showConfirmDialog(null, "El usuario aún no está agregado, ¿Desea agregarlo con los datos por default?","Usuario no agregado",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                     try {
-                        //Se crea el usuario por default
-                        UserBean userBean = new UserBean();
-                        userBean.setUsername(txtUsername.getText());
-                        userBean.setPassword(encryptPasswork.encrypt(String.valueOf(txtPassword.getPassword())));
-                        System.out.println(encryptPasswork.encrypt(String.valueOf(txtPassword.getPassword())));
+                        //Se envía hacia el register.
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -227,7 +218,7 @@ public class Login extends javax.swing.JFrame {
                     txtUsername.setText("");
                     txtPassword.setText("");
                 }
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -265,57 +256,27 @@ public class Login extends javax.swing.JFrame {
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
         // TODO add your handling code here:
         //Llamar al siguiente form
-        Register AbrirRegistro = new Register();
-        AbrirRegistro.setVisible(true);
-        dispose();
+//        Register AbrirRegistro = new Register();
+//        AbrirRegistro.setVisible(true);
+//        dispose();
     }//GEN-LAST:event_lblRegisterMouseClicked
 
-
-
     public boolean loginResult(String username, String password) throws Exception{
-        EncryptionBean encryptPasswork = new EncryptionBean();
-        URL usersPath = getClass().getResource("/com.landivar.source/users.txt");
-        File file = new File(usersPath.getPath());
-        if(file.exists()){
-            FileReader readerFile;
-            try{
-               readerFile = new FileReader(file);
-                BufferedReader reader = new BufferedReader(readerFile);
-                String lineReader;
-                try {
-                    lineReader = reader.readLine();
-                    String[] splitResult;
-                    while(lineReader != null){
-                        if(!"".equals(lineReader)){
-                            splitResult = lineReader.split(",");
-                            if((splitResult[0].equals(username) && password.equals(encryptPasswork.decrypt(splitResult[3])))){
-                                //return true;
-                                break;
-                            }
-                        }
-                        lineReader = reader.readLine();
-                    }
-                    readerFile.close();
-                    reader.close();
-                    
-                    return false;
-                }catch(IOException ex){
-                    ex.getMessage();
-                    return false;
-                }
-            }catch(FileNotFoundException ex){
-                ex.getMessage();
-                return false;
-            }
+        EncryptionBean decrypt = new EncryptionBean(); 
+        UserConstructor constr = new UserConstructor();
+        if(constr.getUserByUsername(username, decrypt.encrypt(password)) != null){
+            System.out.println("El login fue hecho correctamente");
+            return true;
+        }else {
+            return false;
         }
-        return false;
     }
     
    
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws IOException, FileNotFoundException, ParseException {
+    public static void main(String args[]){ 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -338,8 +299,6 @@ public class Login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        UserConstructor constructor = new UserConstructor();
-        constructor.getUserByUsername("Ale");
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  *
@@ -20,7 +19,7 @@ import java.text.SimpleDateFormat;
  */
 public class UserConstructor {
     
-    public UserBean getUserByUsername(String username) throws FileNotFoundException, IOException, ParseException{
+    public UserBean getUserByUsername(String username, String password) throws FileNotFoundException, IOException, ParseException{
         UserBean searchUser;
         //Evaluación de la existencia de la carpeta
         File directory = new File("C:\\MEIA\\");
@@ -37,18 +36,10 @@ public class UserConstructor {
                 while((lineReader = bffer.readLine())!= null){
                    searchUser = new UserBean();
                    String parts[] = lineReader.split("\\|");
-                   if(parts[0].equals(username)){
-                       searchUser.setUsername(parts[0]);
-                       searchUser.setName(parts[1]);
-                       searchUser.setLastname(parts[2]);
-                       searchUser.setPassword(parts[3]);
-                       searchUser.setRolUser(Integer.parseInt(parts[4]));
-                       searchUser.setBirth(parts[5]);
-                       searchUser.setMail(parts[6]);
-                       searchUser.setPhone(parts[7]);
-                       searchUser.setPathPhoto(parts[8]);
-                       searchUser.setStatus(Integer.parseInt(parts[9]));
-                       return searchUser;
+                   if(parts[0].equals(username) && password == null){
+                       return getCompleteObject(parts, searchUser);
+                   }else if(parts[0].equals(username) && parts[3].equals(password)) {
+                       return getCompleteObject(parts, searchUser);
                    }
                 }
             }else {
@@ -56,14 +47,20 @@ public class UserConstructor {
             }
         }
         return null;
+    }     
+    
+    
+    public UserBean getCompleteObject(String parts[], UserBean searchUser){
+        searchUser.setUsername(parts[0]);
+        searchUser.setName(parts[1]);
+        searchUser.setLastname(parts[2]);
+        searchUser.setPassword(parts[3]);
+        searchUser.setRolUser(Integer.parseInt(parts[4]));
+        searchUser.setBirth(parts[5]);
+        searchUser.setMail(parts[6]);
+        searchUser.setPhone(parts[7]);
+        searchUser.setPathPhoto(parts[8]);
+        searchUser.setStatus(Integer.parseInt(parts[9]));
+        return searchUser;
     }
-    
-    public UserBean loginUser(String username, String password){
-    
-        return null;
-    }
-    
-        
-    
-        
 }
