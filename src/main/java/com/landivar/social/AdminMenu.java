@@ -6,8 +6,10 @@
 package com.landivar.social;
 
 import java.io.File;
-import javax.swing.ImageIcon;
+import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import com.landivar.social.EditUsers;
 import com.landivar.system.Storage;
 import com.sun.tools.javac.Main;
@@ -18,8 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -503,9 +503,7 @@ public class AdminMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTFRouteKeyPressed
 
     private void btnSearch3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch3ActionPerformed
-        EditUsers EditUser = new EditUsers();
-            EditUser.setVisible(true);
-            dispose();
+     
     }//GEN-LAST:event_btnSearch3ActionPerformed
 
     private void btnSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch2ActionPerformed

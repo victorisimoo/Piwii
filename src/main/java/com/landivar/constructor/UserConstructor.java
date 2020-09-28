@@ -6,11 +6,16 @@
 package com.landivar.constructor;
 
 import com.landivar.beans.UserBean;
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 
 /**
@@ -19,8 +24,11 @@ import java.text.ParseException;
  */
 public class UserConstructor {
     
+    int lineUser;
+    
     public UserBean getUserByUsername(String username, String password) throws FileNotFoundException, IOException, ParseException{
         UserBean searchUser;
+        int countLine = 0;
         //Evaluación de la existencia de la carpeta
         File directory = new File("C:\\MEIA\\");
         if(!directory.exists()){
@@ -34,9 +42,11 @@ public class UserConstructor {
                 BufferedReader bffer = new BufferedReader(reader);
                 String lineReader;
                 while((lineReader = bffer.readLine())!= null){
+                   countLine++;
                    searchUser = new UserBean();
                    String parts[] = lineReader.split("\\|");
                    if(parts[0].equals(username) && password == null){
+                       setLineUser(countLine);
                        return getCompleteObject(parts, searchUser);
                    }else if(parts[0].equals(username) && parts[3].equals(password)) {
                        return getCompleteObject(parts, searchUser);
@@ -47,7 +57,24 @@ public class UserConstructor {
             }
         }
         return null;
-    }     
+    }
+    
+    public void setLineUser(int line){
+        this.lineUser = line;
+    }
+    
+    public int getLineUser(){
+        return lineUser;
+    }
+ 
+    
+    public boolean editUser(int line, UserBean userEdited) throws IOException{
+        Path path = Paths.get("C:\\MEIA\\usuarios.txt");
+        var lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        lines.set(line - 1, userEdited.toString());
+        Files.write(path, lines, StandardCharsets.UTF_8);
+        return true;
+    }
     
     
     public UserBean getCompleteObject(String parts[], UserBean searchUser){
