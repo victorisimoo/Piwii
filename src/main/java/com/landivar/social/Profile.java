@@ -10,6 +10,8 @@ import com.landivar.system.Storage;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 /**
  *
@@ -200,7 +202,8 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_LbRolFocusGained
 
     private void JPictureFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JPictureFocusGained
-        JPicture.setIcon(new ImageIcon(Storage.Instance().user.getPathPhoto()));
+        ImageIcon imgThisImg = new ImageIcon(new ImageIcon(Storage.Instance().user.getPathPhoto()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        JPicture.setIcon(imgThisImg);
     }//GEN-LAST:event_JPictureFocusGained
 
     /**

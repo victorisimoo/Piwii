@@ -4,8 +4,15 @@
  * and open the template in the editor.
  */
 package com.landivar.social;
+import com.landivar.beans.UserBean;
+import com.landivar.constructor.UserConstructor;
 import com.landivar.system.Storage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -346,13 +353,39 @@ public class EditUsers extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            UserConstructor constructorU = new UserConstructor();
+            constructorU.getUserByUsername(Storage.Instance().user.getUsername(), null);
+            constructorU.editUser(constructorU.getLineUser(), Storage.Instance().user);
+        } catch (IOException ex) {
+            Logger.getLogger(EditUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (ParseException ex) {
+            Logger.getLogger(EditUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnSearch2ActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Profile OpenProfile = new Profile();
+        try {
+            UserBean user = new UserBean();
+            UserConstructor constructorU = new UserConstructor();
+            constructorU.getUserByUsername(Storage.Instance().user.getUsername(), null);
+            user.setName(Storage.Instance().user.getName());
+            user.setLastname(Storage.Instance().user.getLastname());
+            user.setUsername(Storage.Instance().user.getName());
+            user.setBirth(txtDate.getText());
+            user.setMail(txtEmail.getText());
+            user.setPassword(txtPassword.getText());
+            user.setPathPhoto(txtPicture.getText());
+            constructorU.editUser(constructorU.getLineUser(), user);
+            Profile OpenProfile = new Profile();
             OpenProfile.setVisible(true);
             dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(EditUsers.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(EditUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void txtDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDateFocusGained

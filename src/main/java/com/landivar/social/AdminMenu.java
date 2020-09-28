@@ -13,6 +13,9 @@ import javax.swing.JOptionPane;
 import com.landivar.social.EditUsers;
 import com.landivar.system.Storage;
 import com.sun.tools.javac.Main;
+import com.landivar.beans.UserBean;
+import com.landivar.social.SearchUsers;
+import com.landivar.constructor.UserConstructor;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,9 +27,12 @@ import java.nio.file.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author ayalr
@@ -55,23 +61,23 @@ public class AdminMenu extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
-        SpDay = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        SpMonth = new javax.swing.JSpinner();
-        SpYear = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         txtTel = new javax.swing.JTextField();
         txtPicture = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         btnSearch = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         btnGenerateBackup = new javax.swing.JButton();
         txtTFRoute = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         btnSearch2 = new javax.swing.JButton();
         btnSearch3 = new javax.swing.JButton();
         btnRouteB = new javax.swing.JButton();
+        txtDate = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        lbPassword = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -140,14 +146,8 @@ public class AdminMenu extends javax.swing.JFrame {
             }
         });
 
-        SpDay.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
-
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Correo alterno");
-
-        SpMonth.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
-
-        SpYear.setModel(new javax.swing.SpinnerNumberModel(2000, 1900, 2002, 1));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Cambiar password");
@@ -198,7 +198,12 @@ public class AdminMenu extends javax.swing.JFrame {
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Teléfono");
 
-        jButton1.setText("Guardar");
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnGenerateBackup.setBackground(new java.awt.Color(255, 255, 255));
         btnGenerateBackup.setText("Generar Backup");
@@ -252,26 +257,47 @@ public class AdminMenu extends javax.swing.JFrame {
             }
         });
 
+        txtDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDateFocusGained(evt);
+            }
+        });
+        txtDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateActionPerformed(evt);
+            }
+        });
+        txtDate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDateKeyPressed(evt);
+            }
+        });
+
+        jLabel4.setText("Estado");
+
+        lbPassword.setText("valor");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(81, 81, 81))
+                .addGap(61, 61, 61))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSearch2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSearch3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                     .addComponent(btnGenerateBackup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel11)
                             .addComponent(jLabel10)
@@ -288,48 +314,51 @@ public class AdminMenu extends javax.swing.JFrame {
                                 .addComponent(btnRouteB))
                             .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
+                                .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(SpDay, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(SpMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(SpYear, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(81, Short.MAX_VALUE))
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(lbPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbPassword))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SpDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SpMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SpYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(16, 16, 16)
+                    .addComponent(jLabel3)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -343,14 +372,14 @@ public class AdminMenu extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(txtTFRoute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRouteB))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnGenerateBackup)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnSave)
                 .addGap(20, 20, 20))
         );
 
@@ -365,17 +394,17 @@ public class AdminMenu extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(359, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(31, 31, 31)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 49, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -396,6 +425,8 @@ public class AdminMenu extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         JFileChooser dialogo = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("JPEG file", "png", "jpg", "jpeg");
+        dialogo.setFileFilter(filter);
         dialogo.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         File ficheroImagen;
@@ -503,7 +534,10 @@ public class AdminMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTFRouteKeyPressed
 
     private void btnSearch3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch3ActionPerformed
-     
+
+        SearchUsers OpenLogin = new SearchUsers();
+            OpenLogin.setVisible(true);
+            dispose();
     }//GEN-LAST:event_btnSearch3ActionPerformed
 
     private void btnSearch2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch2ActionPerformed
@@ -511,8 +545,52 @@ public class AdminMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearch2ActionPerformed
 
     private void btnRouteBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRouteBActionPerformed
-        // TODO add your handling code here:
+        JFileChooser dialogo = new JFileChooser();
+        dialogo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        File ficheroImagen;
+        String rutaArchivo = "";
+        int valor = dialogo.showOpenDialog(this);
+        if (valor == JFileChooser.APPROVE_OPTION) {
+            ficheroImagen = dialogo.getSelectedFile();
+            rutaArchivo = ficheroImagen.getPath();
+        }
+                
+            txtTFRoute.setText(rutaArchivo);
+
     }//GEN-LAST:event_btnRouteBActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        try {
+            UserBean user = new UserBean();
+            UserConstructor constructorU = new UserConstructor();
+            user.setName(Storage.Instance().user.getName());
+            user.setLastname(Storage.Instance().user.getLastname());
+            user.setUsername(Storage.Instance().user.getName());
+            user.setBirth(txtDate.getText());
+            user.setMail(txtEmail.getText());
+            user.setPassword(txtPassword.getText());
+            user.setPathPhoto(txtPicture.getText());
+            constructorU.getUserByUsername(Storage.Instance().user.getUsername(), null);
+            constructorU.editUser(constructorU.getLineUser(), user);
+        } catch (IOException ex) {
+            Logger.getLogger(AdminMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDateFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateFocusGained
+
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateActionPerformed
+
+    private void txtDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDateKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateKeyPressed
 
     public void moveFile(String origen, String destino){
         Path origenPath = FileSystems.getDefault().getPath(origen);
@@ -570,7 +648,7 @@ public class AdminMenu extends javax.swing.JFrame {
             strError="No existe el archivo";
             return false;
         }
-        }
+    }
     
     public void impresion(String strPath) throws IOException{
         File usuario = new File(strPath);
@@ -653,24 +731,24 @@ public class AdminMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner SpDay;
-    private javax.swing.JSpinner SpMonth;
-    private javax.swing.JSpinner SpYear;
     private javax.swing.JButton btnGenerateBackup;
     private javax.swing.JButton btnRouteB;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearch2;
     private javax.swing.JButton btnSearch3;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbPassword;
+    private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPicture;
