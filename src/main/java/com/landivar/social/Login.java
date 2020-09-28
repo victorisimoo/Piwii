@@ -269,7 +269,7 @@ public class Login extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_lblRegisterMouseClicked
 
-    public boolean loginResult(String username, String password) throws Exception{
+public boolean loginResult(String username, String password) throws Exception{
         EncryptionBean decrypt = new EncryptionBean(); 
         UserConstructor constr = new UserConstructor();
         if(constr.getUserByUsername(username, decrypt.encrypt(password)) != null){

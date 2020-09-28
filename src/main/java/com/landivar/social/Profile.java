@@ -28,13 +28,11 @@ public class Profile extends javax.swing.JFrame {
         userIngresed = user;
         initComponents();
         
-    }
+    }    
 
     Profile() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -192,6 +190,15 @@ public class Profile extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
+        LbName.setText(userIngresed.getUsername());
+        if (userIngresed.getRolUser() == 1) {
+            LbRol.setText("Administrador");
+        }
+        else{
+            LbRol.setText("Usuario");
+        }
+        ImageIcon imgThisImg = new ImageIcon(new ImageIcon(userIngresed.getPathPhoto()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        JPicture.setIcon(imgThisImg);
     }//GEN-LAST:event_formWindowActivated
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
@@ -199,21 +206,15 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_formFocusGained
 
     private void LbNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbNameFocusGained
-        LbName.setText(userIngresed.getUsername());
+
     }//GEN-LAST:event_LbNameFocusGained
 
     private void LbRolFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbRolFocusGained
-        if (userIngresed.getRolUser() == 1) {
-            LbRol.setText("Administrador");
-        }
-        else{
-            LbRol.setText("Usuario");
-        }
+        
     }//GEN-LAST:event_LbRolFocusGained
 
     private void JPictureFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JPictureFocusGained
-        ImageIcon imgThisImg = new ImageIcon(new ImageIcon(userIngresed.getPathPhoto()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-        JPicture.setIcon(imgThisImg);
+        
     }//GEN-LAST:event_JPictureFocusGained
 
     /**

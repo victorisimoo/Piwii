@@ -6,7 +6,6 @@
 package com.landivar.constructor;
 
 import com.landivar.beans.UserBean;
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,7 +68,7 @@ public class UserConstructor {
  
     
     public boolean editUser(int line, UserBean userEdited) throws IOException{
-        Path path = Paths.get("C:\\MEIA\\usuarios.txt");
+        Path path = Paths.get("C:\\MEIA\\");
         var lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         lines.set(line - 1, userEdited.toString());
         Files.write(path, lines, StandardCharsets.UTF_8);
