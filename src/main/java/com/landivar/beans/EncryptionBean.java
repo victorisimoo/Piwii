@@ -34,8 +34,6 @@ public class EncryptionBean {
     int iterationCount = 19;
     Cipher ecipher;
     Cipher dcipher;
-    
-    
 
     public EncryptionBean() {}
     
@@ -66,7 +64,5 @@ public class EncryptionBean {
         String plainStr = new String(utf8, charSet);
         return plainStr;
     }    
-    
-    
     
 }
