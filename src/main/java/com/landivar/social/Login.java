@@ -209,8 +209,12 @@ public class Login extends javax.swing.JFrame {
                 //Evaluación de login eXePmcA1Thtexi8+0GQD1g==
                 if(loginResult(txtUsername.getText(), String.valueOf(txtPassword.getPassword()))){
                     UserConstructor user = new UserConstructor();
-                    Storage.Instance().user  = user.getUserByUsername(txtUsername.getText(), String.valueOf(txtPassword.getPassword()));
+                    UserBean bean = new UserBean();
+                    bean  = user.getUserByUsername(txtUsername.getText(), null);
                     System.out.println("Login exitoso");
+                    Profile AbrirRegistro = new Profile(bean);
+                    AbrirRegistro.setVisible(true);
+                    dispose();
                 }else if(JOptionPane.showConfirmDialog(null, "El usuario aún no está agregado, ¿Desea agregarlo con los datos por default?","Usuario no agregado",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                     try {

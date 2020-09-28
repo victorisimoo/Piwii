@@ -3,11 +3,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.landivar.beans.UserBean;
 import com.landivar.beans.EncryptionBean;
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import com.landivar.social.Login;
 import com.landivar.system.Storage;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -256,7 +251,7 @@ public class Register extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(73, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -376,7 +371,7 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(btnSearch))
                 .addGap(36, 36, 36)
                 .addComponent(btnRegister)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -505,17 +500,17 @@ public class Register extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailKeyPressed
 
-    private void txtTelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelFocusGained
+    private void txtTelFocusGained(java.awt.event.FocusEvent evt) {                                   
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelFocusGained
+    }                                  
 
-    private void txtTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelActionPerformed
+    private void txtTelActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelActionPerformed
+    }                                      
 
-    private void txtTelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyPressed
+    private void txtTelKeyPressed(java.awt.event.KeyEvent evt) {                                  
 
-    }//GEN-LAST:event_txtTelKeyPressed
+    }                                 
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         try{
@@ -524,7 +519,7 @@ public class Register extends javax.swing.JFrame {
         user.setName(txtName.getText());
         user.setLastname(txtLastName.getText());
         EncryptionBean encryption = new EncryptionBean();
-        File file = new File("C:/MEIA/usuario.txt");
+        File file = new File("C:\\MEIA\\usuarios.txt");
         if (file.length() == 3) {
             user.setRolUser(1);
             JOptionPane.showMessageDialog(null, "Usted sera administrador", "Rol", JOptionPane.OK_OPTION);
@@ -557,7 +552,19 @@ public class Register extends javax.swing.JFrame {
           Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_btnRegisterActionPerformed
+/*
+    private void txtTelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelKeyPressed
 
+    }//GEN-LAST:event_txtTelKeyPressed
+
+    private void txtTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelActionPerformed
+
+    private void txtTelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelFocusGained
+*/
     /**
      * @param args the command line arguments
      */
@@ -595,11 +602,11 @@ public class Register extends javax.swing.JFrame {
     
      public int RegisterUser(UserBean user, String strError) {
         try{
-            File MEIA = new File("C:/MEIA");
+            File MEIA = new File("C:\\MEIA");
             if (!MEIA.exists()) {
                 MEIA.mkdir();
             }
-            File usuario = new File("C:/MEIA/usuario.txt");
+            File usuario = new File("C:\\MEIA\\usuarios.txt");
             if (!usuario.exists()) {
                 usuario.createNewFile();
             }

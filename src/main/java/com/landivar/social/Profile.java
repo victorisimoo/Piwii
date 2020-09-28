@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.landivar.social;
+import com.landivar.beans.UserBean;
 import com.landivar.social.AdminMenu;
 import com.landivar.social.EditUsers;
 import com.landivar.system.Storage;
@@ -22,9 +23,18 @@ public class Profile extends javax.swing.JFrame {
     /**
      * Creates new form Profile
      */
-    public Profile() {
+    UserBean userIngresed = new UserBean();
+    public Profile(UserBean user) {
+        userIngresed = user;
         initComponents();
+        
     }
+
+    Profile() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -167,12 +177,12 @@ public class Profile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSettingsActionPerformed
-        if (Storage.Instance().user.getRolUser() == 1) {
+        if (userIngresed.getRolUser() == 1) {
             AdminMenu OpenSettings = new AdminMenu();
             OpenSettings.setVisible(true);
             dispose();
         }
-        else if (Storage.Instance().user.getRolUser() == 0) {
+        else if (userIngresed.getRolUser() == 0) {
             EditUsers OpenSettings = new EditUsers();
             OpenSettings.setVisible(true);
             dispose();
@@ -189,11 +199,11 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_formFocusGained
 
     private void LbNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbNameFocusGained
-        LbName.setText(Storage.Instance().user.getUsername());
+        LbName.setText(userIngresed.getUsername());
     }//GEN-LAST:event_LbNameFocusGained
 
     private void LbRolFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LbRolFocusGained
-        if (Storage.Instance().user.getRolUser() == 1) {
+        if (userIngresed.getRolUser() == 1) {
             LbRol.setText("Administrador");
         }
         else{
@@ -202,7 +212,7 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_LbRolFocusGained
 
     private void JPictureFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JPictureFocusGained
-        ImageIcon imgThisImg = new ImageIcon(new ImageIcon(Storage.Instance().user.getPathPhoto()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        ImageIcon imgThisImg = new ImageIcon(new ImageIcon(userIngresed.getPathPhoto()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         JPicture.setIcon(imgThisImg);
     }//GEN-LAST:event_JPictureFocusGained
 
