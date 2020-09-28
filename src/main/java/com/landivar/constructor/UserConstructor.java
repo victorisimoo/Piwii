@@ -43,7 +43,7 @@ public class UserConstructor {
                        searchUser.setLastname(parts[2]);
                        searchUser.setPassword(parts[3]);
                        searchUser.setRolUser(Integer.parseInt(parts[4]));
-                       searchUser.setBirth(new SimpleDateFormat("dd/MM/yyyy").parse(parts[5]));
+                       searchUser.setBirth(parts[5]);
                        searchUser.setMail(parts[6]);
                        searchUser.setPhone(parts[7]);
                        searchUser.setPathPhoto(parts[8]);
@@ -55,6 +55,11 @@ public class UserConstructor {
                 System.out.println("El usuario no existe debido a que el archivo no existe");
             }
         }
+        return null;
+    }
+    
+    public UserBean loginUser(String username, String password){
+    
         return null;
     }
     

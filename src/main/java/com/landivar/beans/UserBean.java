@@ -19,7 +19,7 @@ public class UserBean {
     private String lastname;
     private String password;
     private int rolUser; //Admin 0, normal 1
-    private Date birth;
+    private String birth;
     private String mail;
     private String phone;
     private String pathPhoto;
@@ -28,7 +28,7 @@ public class UserBean {
     //Constructor class
     public UserBean(){}
 
-    public UserBean(String username, String name, String lastname, String password, int rolUser, Date birth, String mail, String phone, String pathPhoto, int status) {
+    public UserBean(String username, String name, String lastname, String password, int rolUser, String birth, String mail, String phone, String pathPhoto, int status) {
         this.username = username;
         this.name = name;
         this.lastname = lastname;
@@ -83,11 +83,11 @@ public class UserBean {
         this.rolUser = rolUser;
     }
 
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
