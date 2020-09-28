@@ -38,7 +38,7 @@ public class UserConstructor {
                    String parts[] = lineReader.split("\\|");
                    if(parts[0].equals(username) && password == null){
                        return getCompleteObject(parts, searchUser);
-                   }else if(parts[0].equals(username) && parts[2].equals(password)) {
+                   }else if(parts[0].equals(username) && parts[3].equals(password)) {
                        return getCompleteObject(parts, searchUser);
                    }
                 }
