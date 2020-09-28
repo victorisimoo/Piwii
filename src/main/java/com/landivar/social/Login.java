@@ -256,9 +256,9 @@ public class Login extends javax.swing.JFrame {
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
         // TODO add your handling code here:
         //Llamar al siguiente form
-        Register AbrirRegistro = new Register();
-        AbrirRegistro.setVisible(true);
-        dispose();
+//        Register AbrirRegistro = new Register();
+//        AbrirRegistro.setVisible(true);
+//        dispose();
     }//GEN-LAST:event_lblRegisterMouseClicked
 
     public boolean loginResult(String username, String password) throws Exception{
