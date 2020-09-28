@@ -10,6 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import com.landivar.social.EditUsers;
 import com.sun.tools.javac.Main;
+import static java.awt.image.ImageObserver.WIDTH;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.Path;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ayalr
@@ -457,18 +464,30 @@ public class AdminMenu extends javax.swing.JFrame {
 
     private void btnGenerateBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateBackupActionPerformed
 
-        URL url = Main.class.getResource("desc_backup.txt");
-        File file1 = new File("desc1_backup.txt");
-        
-        String path = file1.getPath();
-        String route = txtTFRoute.getText()+"\\bitacora_backup.txt";
-        String oldFile = "C:\\Users\\ayalr\\Documents\\Prueba.txt";
-        File file = new File(route);
-        File carpeta = new File("C:\\Users\\ayalr\\Documents");
-        File[] archivos = carpeta.listFiles();
-        for(File archivo : archivos){
-            moverArchivo(archivo.getPath(), "Ruta destino");
-        }
+       String route = txtTFRoute.getText()+"/bitacora_backup.txt";
+       String oldFile = "C:/MEIAS/usuario";
+       File file = new File(route);
+       try {
+       if (!file.exists()) {           
+               file.createNewFile();
+           }
+           if (file.exists()) {
+               if(!"".equals(route)) {
+               String strError="";
+                 if(!Obtener(oldFile, strError)) {
+                     JOptionPane.showMessageDialog(null, "Se prodrujo un error al cagar los registros: " +strError,"ERROR!", WIDTH);
+                 }
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo para obtener los registros ","ERROR!", WIDTH);
+                }
+           }
+       }
+            
+            catch (IOException ex) {
+               Logger.getLogger(UserMain1.class.getName()).log(Level.SEVERE, null, ex);
+           }
+     
     }//GEN-LAST:event_btnGenerateBackupActionPerformed
 
     private void txtTFRouteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTFRouteFocusGained
@@ -497,6 +516,54 @@ public class AdminMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRouteBActionPerformed
 
+    public boolean Obtener(String strPath, String strError) {
+        File Archivo = new File(strPath);
+        if(Archivo.exists()==true) {
+            FileReader LecturaArchivo;
+            try {
+                LecturaArchivo = new FileReader(Archivo);
+                BufferedReader LeerArchivo = new BufferedReader(LecturaArchivo);
+                String Linea="";
+                try {
+                    Linea=LeerArchivo.readLine();
+                    String[] split;
+                    FileWriter fw = new FileWriter(strPath, true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    
+                    while(Linea != null) {
+                        if(!"".equals(Linea)) {
+                            split=Linea.split("|");
+                            for(int i = 0; i < 6; i++){
+                                bw.write(split[i]);    
+                            }
+                            bw.newLine();
+                        }
+                        Linea=LeerArchivo.readLine();
+                    }
+                    bw.close();
+                    
+                    LecturaArchivo.close();
+                    LeerArchivo.close();
+                    strError="";
+                    return true;
+                    
+                } catch (IOException ex) {
+                    strError= ex.getMessage();
+                    return false;
+                }
+            } catch (FileNotFoundException ex) {
+                strError= ex.getMessage();
+                return false;
+            }            
+        }
+        else {
+            strError="No existe el archivo";
+            return false;
+        }
+    }
+    
+    
+    
     /**
      * @param args the command line arguments
      */
